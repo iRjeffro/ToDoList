@@ -33,33 +33,32 @@ function addToDoneList(event) {
 }
 
 function addDeleteButton(event) {
-	var listItem = document.querySelectorAll("li");
-	var trashBtn = document.createElement("button");
-	trashBtn.appendChild(document.createTextNode("X"));
-	if (event.target.childNodes.length <= 1 && event.target.tagName.toLowerCase() === "li") {
-		event.target.appendChild(trashBtn);
+	if (event.target.tagName.toLowerCase() === "li") {
+	  var trashBtnAdd = document.createElement("button");
+	  trashBtnAdd.appendChild(document.createTextNode("X"));
+	  event.target.appendChild(trashBtnAdd);
 	}
 }
 
 function removeDeleteButton(event) {
-	var listItem = document.querySelectorAll("li");
-	var trashBtn = document.createElement("button");
-	event.target.removeChild(trashBtn);
+	if (event.target.tagName.toLowerCase() === "li") {
+	  var deleteBtn = event.target.querySelector("button");
+	  if (deleteBtn) {
+		event.target.removeChild(deleteBtn);
+	  }
+	}
 }
 
 function deleteItem(event) {
 	if (event.target.tagName.toLowerCase() === "button") {
-		event.target.removeEventListener("click", removeParent);
-		event.target.parentNode.remove();
+	  var listItem = event.target.parentNode;
+	  listItem.parentNode.removeChild(listItem);
 	}
 }
 
 button.addEventListener("click", addListAfterClick);
-
 input.addEventListener("keypress", addListAfterKeypress);
-
 ul.addEventListener("click", addToDoneList);
-
 ul.addEventListener("mouseover", addDeleteButton);
-
-ul.addEventListener("mouseleave", removeDeleteButton);
+ul.addEventListener("mouseout", removeDeleteButton);
+ul.addEventListener("click", deleteItem);
